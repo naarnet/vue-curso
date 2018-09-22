@@ -12,7 +12,7 @@
     </p>
     <p>
       <label>Descripcion</label>
-      <textarea v-model="restaurante.descripcion"></textarea>
+      <textarea v-model="restaurante.description"></textarea>
     </p>
     <p>
       <label>Precio</label>
@@ -42,7 +42,7 @@ export default {
       restaurante: {
         nombre: "",
         direccion: "",
-        descripcion: "",
+        description: "",
         precio: "normal"
       }
     };

@@ -11,6 +11,14 @@
           <router-link :to="{name:'editar-restaurante',params:{id:restaurante.id}}">
             Editar
           </router-link>
+          <span v-if="showBorrar != restaurante.id">
+              <a @click="borrarRestaurante(restaurante.id)" style="cursor:pointer">Eliminar</a>
+          </span>
+          <span v-else>
+              <p>Estar seguro de querer borrarlo ? </p>
+              <button @click="cancelarBorrado">Cancelar</button>
+              <button @click="confirmarBorrado(restaurante.id)">Borrar</button>
+          </span>
         </p>
       </li>
     </ul>
@@ -28,12 +36,25 @@ export default {
   data() {
     return {
       texto: "Página Restaurantes LIST",
-      restaurantes: null
+      restaurantes: null,
+      showBorrar: null
     };
   },
   methods: {
     getRestaurantes() {
       var url = "http://proyecto.local/api/restaurantes";
+      axios.get(url).then(respuesta => {
+        this.restaurantes = respuesta.data;
+      });
+    },
+    borrarRestaurante(id) {
+      this.showBorrar = id;
+    },
+    cancelarBorrado() {
+      this.showBorrar = null;
+    },
+    confirmarBorrado(id) {
+      var url = "http://proyecto.local/api/delete-restaurantes/"+id;
       axios.get(url).then(respuesta => {
         this.restaurantes = respuesta.data;
       });

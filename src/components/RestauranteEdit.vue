@@ -2,6 +2,7 @@
   <div id="restaurante-edit">
   <h2>Editar Restaurante</h2>
   <form v-on:submit.prevent="guardarRestaurante">
+      <input type="hidden" v-model="restaurante.id">
     <p>
       <label>Nombre</label>
       <input type="text" v-model="restaurante.nombre">
@@ -12,7 +13,7 @@
     </p>
     <p>
       <label>Descripcion</label>
-      <textarea v-model="restaurante.descripcion"></textarea>
+      <textarea v-model="restaurante.description"></textarea>
     </p>
     <p>
       <label>Precio</label>
@@ -36,13 +37,21 @@ import axios from "axios";
 
 export default {
   name: "restaurante-edit",
-  mounted() {},
+  mounted() {
+    this.id = this.$route.params.id;
+
+    var url = "http://proyecto.local/api/restaurante/" + this.id;
+    axios.get(url).then(respuesta => {
+      this.restaurante = respuesta.data;
+    });
+  },
   data() {
     return {
+      id: null,
       restaurante: {
         nombre: "",
         direccion: "",
-        descripcion: "",
+        description: "",
         precio: "normal"
       }
     };
@@ -51,8 +60,9 @@ export default {
     guardarRestaurante() {
       var router = this.$router;
       var params = JSON.stringify(this.restaurante);
+      var url = "http://proyecto.local/api/edit-restaurante";
       axios
-        .post("http://proyecto.local/api/create-restaurante", params)
+        .post(url, params)
         .then(respuesta => {
           if (respuesta.status === 200) {
             router.push("/restaurante");

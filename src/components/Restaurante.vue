@@ -18,7 +18,6 @@ export default {
   name: "restaurante-detail",
   mounted() {
     this.id = this.$route.params.id;
-    console.log(this.$route.params.id);
     var url = "http://proyecto.local/api/restaurante/" + this.id;
     axios.get(url).then(respuesta => {
       this.restaurante = respuesta.data;
